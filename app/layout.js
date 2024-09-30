@@ -1,3 +1,4 @@
+import { SearchProvider } from "./searchcontext";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -26,9 +27,11 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="hi absolute top-0 z-[-2]  w-[99vw] bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]">
+       <SearchProvider>
         <Navbar/>
         {children}
         <Footer/>
+        </SearchProvider>
         </div>
        
       </body>

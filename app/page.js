@@ -1,10 +1,10 @@
 'use client'
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { SearchContext } from './searchcontext';
+import { useContext, useEffect, useState } from 'react';
 
 function MyApp() {
-
-  const [posts, setposts] = useState([]);
+const {post,setpost}=useContext(SearchContext);
   const [loading, setloading] = useState(true);
 
   useEffect(() => {
@@ -12,9 +12,9 @@ function MyApp() {
 
       try {
         const data = await fetch("https://jsonplaceholder.typicode.com/posts");
-        const post = await data.json();
-        console.log(post);
-        setposts(post);
+        const res = await data.json();
+        console.log(res);
+        setpost(res);
         setloading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -39,7 +39,7 @@ function MyApp() {
       <section className="text-black body-font">
         <div className="container px-5 py-16 mx-auto " bis_skin_checked="1">
           <div className="flex flex-wrap -m-4" bis_skin_checked="1">
-            {posts.slice(0, 3).map((post) => {
+            {post.slice(0, 3).map((post) => {
               return (
                 <div key={post.id} className="p-4 lg:w-1/3" bis_skin_checked="1">
                   <div className="h-full bg-gray-100 bg-opacity-75 px-8 pt-16 pb-24 rounded-lg overflow-hidden text-center relative" bis_skin_checked="1">

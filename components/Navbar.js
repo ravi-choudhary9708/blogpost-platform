@@ -1,43 +1,23 @@
 'use client'
- 
+ import { useContext } from 'react';
+ import { SearchContext } from '@/app/searchcontext';
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useState,useEffect } from 'react';
 
 const Navbar = () => {
+const {searchQuery,setsearchQuery,post,setpost}=useContext(SearchContext)
+
   const router = useRouter();
-  const [searchquery, setsearchquery] = useState('');
-  const [filteredposts, setfilteredposts] = useState([]);
-  const [posts, setposts] = useState()
-
-  useEffect(() => {
-    async function fetchdata() {
-
-      try {
-        const data = await fetch("https://jsonplaceholder.typicode.com/posts");
-        const post = await data.json();
-        console.log(post);
-        setposts(post)
-       
-      } catch (error) {
-        console.error("Error fetching data:", error);
-       
-      }
-    }
-    fetchdata();
-
-  }, []);
-
-
   const handlesearch= (e)=>{
     const query =e.target.value.toLowerCase();
-    setsearchquery(query);
+    setsearchQuery(query);
 console.log(e.target.value.toLowerCase())
-    const filtered=posts.filter((post)=>{
-post.title.toLowerCase().includes(query);
+    const filtered=post.filter((post)=>{
+return post.title.toLowerCase().includes(query);
 console.log(post.title.toLowerCase().includes(query))
     })
-    setfilteredposts(filtered)
+    setpost(filtered)
   }
 
   return (
@@ -47,7 +27,7 @@ console.log(post.title.toLowerCase().includes(query))
         <a className="mr-5 hover:text-white cursor-pointer">First Link</a>
         <a className="mr-5 hover:text-white  cursor-pointer">Second Link</a>
         <a className="mr-5 hover:text-white cursor-pointer ">Third Link</a>
-    <input className='rounded-lg' onChange={handlesearch} type="search" placeholder='search posts' name='posts-title' value={searchquery} />
+    <input className='rounded-lg' onChange={handlesearch} type="search" placeholder='search posts' name='posts-title' value={searchQuery} />
       </nav>
       <a className="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-gray-900 lg:items-center lg:justify-center mb-4 md:mb-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
