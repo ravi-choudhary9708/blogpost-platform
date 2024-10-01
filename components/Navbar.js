@@ -6,18 +6,36 @@ import React from 'react'
 import { useState,useEffect } from 'react';
 
 const Navbar = () => {
-const {searchQuery,setsearchQuery,post,setpost}=useContext(SearchContext)
+const {searchQuery,setsearchQuery,post,setpost}=useContext(SearchContext);
+const [originalposts, setoriginalposts] = useState([])
+
+useEffect(() => {
+  if(post.length>0){
+    setoriginalposts(post)
+  }
+
+}, [post])
+
 
   const router = useRouter();
   const handlesearch= (e)=>{
     const query =e.target.value.toLowerCase();
     setsearchQuery(query);
 console.log(e.target.value.toLowerCase())
-    const filtered=post.filter((post)=>{
-return post.title.toLowerCase().includes(query);
-console.log(post.title.toLowerCase().includes(query))
-    })
-    setpost(filtered)
+
+   if(query===""){
+    setpost(originalposts)
+   }
+   else{
+    const filtered=originalposts.filter((post)=>{
+      return post.title.toLowerCase().includes(query);
+      console.log(post.title.toLowerCase().includes(query))
+   })
+   setpost(filtered)
+    
+   }
+
+   
   }
 
   return (
@@ -27,7 +45,7 @@ console.log(post.title.toLowerCase().includes(query))
         <a className="mr-5 hover:text-white cursor-pointer">First Link</a>
         <a className="mr-5 hover:text-white  cursor-pointer">Second Link</a>
         <a className="mr-5 hover:text-white cursor-pointer ">Third Link</a>
-    <input className='rounded-lg' onChange={handlesearch} type="search" placeholder='search posts' name='posts-title' value={searchQuery} />
+    <input className='rounded-lg  p-1' onChange={handlesearch} type="search" placeholder='search posts' name='posts-title' value={searchQuery} />
       </nav>
       <a className="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-gray-900 lg:items-center lg:justify-center mb-4 md:mb-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
