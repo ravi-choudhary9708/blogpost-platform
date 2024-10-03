@@ -9,13 +9,22 @@ const Navbar = () => {
 const {searchQuery,setsearchQuery,post,setpost}=useContext(SearchContext);
 const [originalposts, setoriginalposts] = useState([])
 
+
+
+
 useEffect(() => {
-  if(post.length>0){
+  if( originalposts.length===0 && post.length>0){
     setoriginalposts(post)
   }
 
-}, [post])
+}, [post,originalposts.length])
 
+//originalpost.lenth===0 check if original post is empty ,meaning you have not yet stored the full list of posts
+
+/*
+Why check this?
+You only want to set originalposts once, the first time posts are fetched. Once it's set, you don't want to keep overwriting it, especially after filtering, so this condition ensures originalposts is only set once.
+*/
 
   const router = useRouter();
   const handlesearch= (e)=>{
@@ -37,6 +46,15 @@ console.log(e.target.value.toLowerCase())
 
    
   }
+
+/*
+The issue you're facing happens because you're filtering posts based on the current originalposts, but when a second search is made, the originalposts still contain only the posts from the previous search. This causes the filter to not work as expected when you search for something new.
+
+Problem:
+The main problem is that setoriginalposts(post) is only being set once and you're using originalposts for filtering. Once the first search happens, you're working with the filtered posts and not the full list of posts from the API.
+*/
+
+
 
   return (
     <header className="text-gray-600 body-font">
